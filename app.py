@@ -23,7 +23,7 @@ ma=Marshmallow(app)   #crea el objeto ma de de la clase Marshmallow
 
 # defino la tabla
 class Cliente(db.Model):   # la clase Producto hereda de db.Model, esta clase representa la tabla "clientes" en la base de datos
-    id=db.Column(db.Integer, primary_key=True)   #define los campos de la tabla
+    idclientes=db.Column(db.Integer, primary_key=True) #define los campos de la tabla
     nombre=db.Column(db.String(100))
     apellido=db.Column(db.String(100))
     telefono=db.Column(db.Integer)
@@ -45,13 +45,7 @@ class Cliente(db.Model):   # la clase Producto hereda de db.Model, esta clase re
         self.medio_de_pago=medio_de_pago
         self.dia_de_entrega=dia_de_entrega
 
-
-
-
-
-    #  si hay que crear mas tablas , se hace aqui
-
-
+#  si hay que crear mas tablas , se hace aqui
 
 
 with app.app_context():
@@ -60,7 +54,7 @@ with app.app_context():
 
 class ClienteSchema(ma.Schema):
     class Meta:
-        fields=('id','nombre','apellido','telefono','localidad', 'direccion', 'bolson', 'medio_de_pago', 'dia_de_entrega')
+        fields=('idclientes','nombre','apellido','telefono','localidad', 'direccion', 'bolson', 'medio_de_pago', 'dia_de_entrega')
 
 
 cliente_schema=ClienteSchema()            # El objeto producto_schema es para traer un producto
@@ -72,10 +66,9 @@ clientes_schema=ClienteSchema(many=True)  # El objeto productos_schema es para t
 # crea los endpoint o rutas (json)
 @app.route('/cliente',methods=['GET'])
 def get_Clientes():
-    all_clientes=Cliente.query.all()         # el metodo query.all() lo hereda de db.Model
-    result=clientes_schema.dump(all_clientes)  # el metodo dump() lo hereda de ma.schema y
-                                                 # trae todos los registros de la tabla
-    return jsonify(result)                       # retorna un JSON de todos los registros de la tabla
+    all_clientes=Cliente.query.all()  # el metodo query.all() lo hereda de db.Model
+    result=clientes_schema.dump(all_clientes)  # el metodo dump() lo hereda de ma.schema y trae todos los registros de la tabla
+    return jsonify(result)  # retorna un JSON de todos los registros de la tabla
 
 
 #creo un endpoint para traer solo un cliente
